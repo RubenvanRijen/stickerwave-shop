@@ -1,13 +1,12 @@
-.container {
+.main-content {
   display: flex;
   flex-direction: column;
-  min-height: 78vh; /* Ensure the container takes up at least the full viewport height */
 }
 
 /* Content inside the container */
 .content {
   flex: 1; /* Allow content to grow and take available space */
-  padding: 20px; /* Add padding for spacing */
+  padding: 10px; /* Add padding for spacing */
 }
 
 /* Banner styling */
