@@ -9,3 +9,30 @@
   flex: 1; /* Allow content to grow and take available space */
   padding: 20px; /* Add padding for spacing */
 }
+
+/* Banner styling */
+.banner {
+  background-image: url("../../assets/standart-stickers/banner.jpg");
+  background-size: cover;
+  text-align: center;
+  padding: 4rem 0;
+  color: #fff;
+}
+
+.banner h1 {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  -webkit-text-stroke: 1px black;
+  @media (max-width: 768px) {
+    font-size: 3rem; /* Decrease font size for smaller screens */
+  }
+}
+
+.banner p {
+  font-size: 2.5rem;
+  -webkit-text-stroke: 0.5px black;
+  @media (max-width: 768px) {
+    font-size: 1.8rem; /* Decrease font size for smaller screens */
+  }
+}
+

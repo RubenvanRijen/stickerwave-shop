@@ -45,7 +45,7 @@
 }
 
 /* Styling for the container of the burger menu icon */
-.menu-button-container {
+.burger-menu {
   display: none; /* Initially hide the container for the burger menu */
   height: 100%; /* Set the container's height to 100% of its parent */
   width: 30px; /* Set a fixed width for the container */
@@ -57,7 +57,7 @@
 
 /* Styling for the burger menu toggle input */
 .menu-toggle {
-  display: none; /* Initially hide the checkbox input for the burger menu */
+  display: none; /* Hide the checkbox input for the burger menu */
 }
 
 /* Styling for the burger menu icon and its lines */
@@ -85,16 +85,16 @@
 }
 
 /* Styling for the burger menu icon when the checkbox is checked (menu is open) */
-.menu-toggle:checked + .menu-button-container .menu-button::before {
+.menu-toggle:checked + .burger-menu .menu-button::before {
   margin-top: 0; /* Reset margin to position the line at the center */
   transform: rotate(405deg); /* Rotate the line to create an 'X' shape */
 }
 
-.menu-toggle:checked + .menu-button-container .menu-button {
-  background: #ffcc00; /* Make the button transparent when checked */
+.menu-toggle:checked + .burger-menu .menu-button {
+  background: #ffcc00; /* Make the button transparent when checked, so the background-color */
 }
 
-.menu-toggle:checked + .menu-button-container .menu-button::after {
+.menu-toggle:checked + .burger-menu .menu-button::after {
   margin-top: 0; /* Reset margin to position the line at the center */
   transform: rotate(-405deg); /* Rotate the line to create an 'X' shape */
 }
@@ -126,7 +126,7 @@
 /* Media query for screens with a maximum width of 700px */
 @media (max-width: 700px) {
   /* Display the burger menu container */
-  .menu-button-container {
+  .burger-menu {
     display: flex;
   }
 
