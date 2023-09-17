@@ -1,0 +1,177 @@
+/* Styling for the entire navbar */
+.sticker-header {
+  /* Create a flex container for layout */
+  display: flex;
+  flex-direction: row; /* Arrange children in a horizontal row */
+  align-items: center; /* Vertically center-align children */
+  justify-content: space-between; /* Space between children, pushing them to the edges */
+  background-color: #ffcc00; /* Sticker yellow background color */
+  color: #FFF; /* White text color */
+  height: 50px; /* Set the height of the navbar to 50 pixels */
+  padding: 1em; /* Add padding around the content inside the navbar */
+}
+
+
+/* Styling for the left part of the navbar with the logo and the text */
+.logo {
+  /* Create a flex container for layout */
+  display: flex;
+  align-items: center; /* Vertically center-align children */
+
+  /* Logo Image Styling */
+  img {
+    width: 40px; /* Set the width of the logo image to 40 pixels */
+    height: 40px; /* Set the height of the logo image to 40 pixels */
+    border-radius: 50%; /* Apply a circular border radius for a rounded appearance */
+    border: 2px solid #fff; /* Add a white border around the logo */
+    margin-right: 10px; /* Create spacing between the logo and other elements */
+  }
+
+  /* Logo Text Styling */
+  h1 {
+    font-size: 24px; /* Set the font size of the text to 24 pixels */
+    color: #fff; /* White text color */
+  }
+}
+
+/* Styling for the menu container */
+.menu {
+  /* Create a flex container for layout */
+  display: flex;
+  flex-direction: row; /* Arrange menu items horizontally in a row */
+  list-style-type: none; /* Remove default list bullets */
+  margin: 0; /* Remove margin to avoid spacing around the menu */
+  padding: 0; /* Remove padding to avoid spacing inside the menu */
+}
+
+/* Styling for the container of the burger menu icon */
+.menu-button-container {
+  display: none; /* Initially hide the container for the burger menu */
+  height: 100%; /* Set the container's height to 100% of its parent */
+  width: 30px; /* Set a fixed width for the container */
+  cursor: pointer; /* Change cursor to a pointer when hovering */
+  flex-direction: column; /* Arrange children in a column layout */
+  justify-content: center; /* Vertically center-align children */
+  align-items: center; /* Horizontally center-align children */
+}
+
+/* Styling for the burger menu toggle input */
+.menu-toggle {
+  display: none; /* Initially hide the checkbox input for the burger menu */
+}
+
+/* Styling for the burger menu icon and its lines */
+.menu-button,
+.menu-button::before,
+.menu-button::after {
+  display: block; /* Display as block elements */
+  background-color: #fff; /* White background color for the menu lines */
+  position: absolute; /* Position the lines absolutely within the container */
+  height: 4px; /* Set the height of menu lines */
+  width: 30px; /* Set the width of menu lines */
+  transition: transform 400ms cubic-bezier(0.23, 1, 0.32, 1); /* Add animation to menu lines */
+  border-radius: 2px; /* Apply a slight border radius to menu lines for rounded corners */
+}
+
+/* Styling for the lines before and after the burger menu icon */
+.menu-button::before {
+  content: ''; /* Empty content, used for creating lines */
+  margin-top: -8px; /* Position the line above the center of the menu button */
+}
+
+.menu-button::after {
+  content: ''; /* Empty content, used for creating lines */
+  margin-top: 8px; /* Position the line below the center of the menu button */
+}
+
+/* Styling for the burger menu icon when the checkbox is checked (menu is open) */
+.menu-toggle:checked + .menu-button-container .menu-button::before {
+  margin-top: 0; /* Reset margin to position the line at the center */
+  transform: rotate(405deg); /* Rotate the line to create an 'X' shape */
+}
+
+.menu-toggle:checked + .menu-button-container .menu-button {
+  background: rgba(255, 255, 255, 0); /* Make the button transparent when checked */
+}
+
+.menu-toggle:checked + .menu-button-container .menu-button::after {
+  margin-top: 0; /* Reset margin to position the line at the center */
+  transform: rotate(-405deg); /* Rotate the line to create an 'X' shape */
+}
+
+
+/* Styling for the router links within the menu */
+.menu .router-link {
+  margin: 0 1rem; /* Add horizontal spacing around each link */
+  overflow: hidden; /* Hide any overflowing content within the links */
+  color: #fff; /* White text color for navigation links */
+  text-decoration: none; /* Remove underlines from links */
+  margin-right: 20px; /* Add additional right margin for spacing */
+  font-size: 18px; /* Set the font size for the links to 18 pixels */
+  transition: color 0.3s; /* Add a smooth color transition effect */
+
+  /* Styling for links on hover */
+  &:hover {
+    color: #333; /* Darker color when hovering over links */
+  }
+
+  /* Styling for the active link */
+  &.active {
+    font-weight: bold; /* Make the active link text bold */
+    /* Add additional styles for the active link as needed */
+  }
+}
+
+
+/* Media query for screens with a maximum width of 700px */
+@media (max-width: 700px) {
+  /* Display the burger menu container */
+  .menu-button-container {
+    display: flex;
+  }
+
+  /* Styling for the menu when the screen is at or below 700px */
+  .menu {
+    position: absolute; /* Position the menu absolutely */
+    top: 0; /* Place it at the top of the viewport */
+    margin-top: 82px; /* Create space from the top, adjusting for the header's height */
+    left: 0; /* Align it to the left side of the viewport */
+    flex-direction: column; /* Arrange menu items vertically in a column */
+    width: 100%; /* Occupy the full width of the viewport */
+    justify-content: center; /* Vertically center-align menu items */
+    align-items: center; /* Horizontally center-align menu items */
+  }
+
+  /* Styling for individual menu items when the checkbox is unchecked */
+  .menu-toggle ~ .menu a {
+    height: 0; /* Initially hide menu items */
+    margin: 0;
+    padding: 0;
+    border: 0;
+    transition: height 400ms cubic-bezier(0.23, 1, 0.32, 1); /* Add animation to expand menu items */
+  }
+
+  /* Styling for individual menu items when the checkbox is checked (menu is open) */
+  .menu-toggle:checked ~ .menu a {
+    border: 1px solid #333; /* Add a border to menu items */
+    height: 2.5em; /* Set a specific height for menu items */
+    padding: 0.5em; /* Add padding to menu items */
+    transition: height 400ms cubic-bezier(0.23, 1, 0.32, 1); /* Add animation to expand menu items */
+  }
+
+  /* Styling for router links within the menu */
+  .menu .router-link {
+    display: flex; /* Display as flex to control layout */
+    justify-content: center; /* Horizontally center-align the link content */
+    margin: 0;
+    padding: 0.5em 0; /* Add vertical padding to menu links */
+    width: 100%; /* Occupy the full width of the menu */
+    color: white; /* Set text color to white */
+    background-color: #222; /* Set the background color of menu links */
+  }
+
+  /* Styling for borders between menu items */
+  .menu > a:not(:last-child) {
+    border-bottom: 1px solid #444; /* Add a bottom border to separate menu items */
+  }
+}

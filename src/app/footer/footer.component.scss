@@ -1,0 +1,45 @@
+/* Styling for the footer */
+.sticker-footer {
+  background-color: #ffcc00; /* Sticker yellow background color */
+  padding: 20px 0; /* Add padding to the top and bottom of the footer */
+  text-align: center; /* Center-align text within the footer */
+
+  /* Styling for the sticker icons section */
+  .sticker-icons {
+    display: flex; /* Display sticker icons horizontally */
+    justify-content: center; /* Horizontally center-align sticker icons */
+    align-items: center; /* Vertically center-align sticker icons */
+    margin-bottom: 20px; /* Add margin at the bottom of the sticker icons section */
+
+    /* Styling for individual sticker icons */
+    .sticker-icon {
+      margin: 0 10px; /* Add horizontal spacing between sticker icons */
+
+      /* Styling for the image within the sticker icon */
+      img {
+        width: 70px; /* Set the width of the sticker icon image */
+        height: 70px; /* Set the height of the sticker icon image */
+        border-radius: 50%; /* Apply a circular border radius for a rounded appearance */
+        border: 2px solid #fff; /* Add a white border around the sticker icon image */
+      }
+    }
+  }
+
+  /* Styling for the shop information section */
+  .shop-info {
+    color: #fff; /* White text color */
+    font-size: 16px; /* Set the font size for shop information */
+
+    strong {
+      font-size: 20px; /* Set a larger font size for strong elements */
+      display: block; /* Display strong elements as block-level elements */
+      margin-bottom: 5px; /* Add margin at the bottom of strong elements */
+    }
+  }
+
+  /* Styling for the copyright information */
+  .copyright {
+    color: #fff; /* White text color */
+    font-size: 14px; /* Set the font size for copyright information */
+  }
+}
