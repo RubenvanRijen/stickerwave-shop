@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { AuthenticationService } from '../services/authentication/authentication.service';
-import { LoginModel } from '../models/loginModel';
+import { loginRequestModel } from '../models/LoginRequestModel';
+import { Router } from '@angular/router';
+import { take } from 'rxjs';
+import { loginResponseModel } from '../models/LoginResponseModel';
 
 @Component({
   selector: 'app-login',
@@ -8,25 +11,30 @@ import { LoginModel } from '../models/loginModel';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-  public formData: LoginModel = {
+  public formData: loginRequestModel = {
     email: '',
     password: '',
   }; // Object to hold form data
 
-  constructor(private authenticationService: AuthenticationService) {}
+  constructor(
+    private authenticationService: AuthenticationService,
+    private router: Router
+  ) {}
 
   onSubmit() {
-    this.authenticationService.login(this.formData).subscribe(
-      (response) => {
-        // Handle a successful response from the API
-        console.log('API Response:', response);
-        // Redirect or perform other actions as needed
-      },
-      (error) => {
-        // Handle errors from the API
-        console.error('API Error:', error);
-        // You can also display an error message to the user
-      }
-    );
+    this.authenticationService
+      .loginAPI(this.formData)
+      .pipe(take(1))
+      .subscribe(
+        (response: loginResponseModel) => {
+          this.authenticationService.setAuthToken(response.access_token); // Store the token
+          this.authenticationService.setUserData(response.user); // Store user data
+          this.authenticationService.setAuthenticated(true); // Set authenticated state
+          this.router.navigate(['/home']);
+        },
+        (error) => {
+          console.error('API Error:', error);
+        }
+      );
   }
 }
