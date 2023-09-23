@@ -6,6 +6,7 @@ import { userData } from 'src/app/models/UserData';
 import { loginRequestModel } from 'src/app/models/LoginRequestModel';
 import { CookieService } from 'ngx-cookie-service';
 import { CookieNames } from '../cookieNames';
+import { registerRequestModel } from 'src/app/models/RegisterRequestModel';
 
 @Injectable({
   providedIn: 'root',
@@ -37,17 +38,17 @@ export class AuthenticationService {
   }
 
   // Getter methods
-  getAuthToken(): string | null {
+  public getAuthToken(): string | null {
     return this.authToken !== null
       ? this.authToken
       : this.cookieService.get(this.cookieNames.authenticationToken);
   }
 
-  getUserData(): userData | null {
+  public getUserData(): userData | null {
     return this.userData;
   }
 
-  isUserAuthenticated(): boolean {
+  public isUserAuthenticated(): boolean {
     if (!this.isAuthenticated) {
       const token = this.cookieService.get(
         this.cookieNames.authenticationToken
@@ -73,13 +74,9 @@ export class AuthenticationService {
   }
 
   // api calls
-  userProfileAPI(): Observable<any> {
-    const token = this.cookieService.get(this.cookieNames.authenticationToken);
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
+  public userProfileAPI(): Observable<any> {
     const getUserProfileUrl = `${this.apiUrl}/user-profile`;
-    return this.http.get(getUserProfileUrl, { headers });
+    return this.http.get(getUserProfileUrl, this.createHeaderToken());
   }
 
   public loginAPI(formData: loginRequestModel): Observable<any> {
@@ -87,17 +84,19 @@ export class AuthenticationService {
     return this.http.post(loginUrl, formData);
   }
 
-  public logoutAPI() {
-    const token =
-      this.authToken === null
-        ? this.cookieService.get(this.cookieNames.authenticationToken)
-        : this.authToken;
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
+  public logoutAPI(): Observable<any> {
     const logoutUrl = `${this.apiUrl}/logout`;
-    return this.http.post(logoutUrl, { headers });
+    return this.http.post(logoutUrl, this.createHeaderToken());
+  }
+
+  public refreshAPI(): Observable<any> {
+    const refreshUrl = `${this.apiUrl}/refresh`;
+    return this.http.post(refreshUrl, this.createHeaderToken());
+  }
+
+  public registerAPI(formdata: registerRequestModel): Observable<any>{
+    const refreshUrl = `${this.apiUrl}/register`;
+    return this.http.post(refreshUrl, formdata);
   }
 
   // normal auth functions
@@ -106,5 +105,16 @@ export class AuthenticationService {
     this.authToken = null;
     this.userData = null;
     this.isAuthenticated = false;
+  }
+
+  public createHeaderToken(): { headers: HttpHeaders } {
+    const token: string =
+      this.authToken === null
+        ? this.cookieService.get(this.cookieNames.authenticationToken)
+        : this.authToken;
+    const headers: HttpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return { headers };
   }
 }
