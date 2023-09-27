@@ -49,10 +49,10 @@ export class AuthenticationService {
   }
 
   public isUserAuthenticated(): boolean {
-    if (!this.isAuthenticated) {
-      const token = this.cookieService.get(
-        this.cookieNames.authenticationToken
-      );
+    const token = this.cookieService.get(
+      this.cookieNames.authenticationToken
+    );
+    if (!this.isAuthenticated && token !== "") {
       if (token !== null || token !== undefined) {
         if (this.userData === null) {
           const data = this.userProfileAPI();
@@ -94,7 +94,7 @@ export class AuthenticationService {
     return this.http.post(refreshUrl, this.createHeaderToken());
   }
 
-  public registerAPI(formdata: registerRequestModel): Observable<any>{
+  public registerAPI(formdata: registerRequestModel): Observable<any> {
     const refreshUrl = `${this.apiUrl}/register`;
     return this.http.post(refreshUrl, formdata);
   }

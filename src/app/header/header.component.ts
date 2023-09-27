@@ -26,6 +26,9 @@ export class HeaderComponent {
 
   getUserName(): string | undefined {
     const user = this.authenticationService.getUserData();
+    if (user === null) {
+      return 'user';
+    }
     return user?.name;
   }
 
