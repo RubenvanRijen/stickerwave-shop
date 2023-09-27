@@ -49,27 +49,6 @@ export class AuthenticationService {
   }
 
   public isUserAuthenticated(): boolean {
-    const token = this.cookieService.get(
-      this.cookieNames.authenticationToken
-    );
-    if (!this.isAuthenticated && token !== "") {
-      if (token !== null || token !== undefined) {
-        if (this.userData === null) {
-          const data = this.userProfileAPI();
-          data.pipe(take(1)).subscribe(
-            (response: userData) => {
-              this.setUserData(response);
-            },
-            (error) => {
-              // Handle errors from the API
-              console.error('API Error:', error);
-              // You can also display an error message to the user
-            }
-          );
-        }
-        this.setAuthenticated(true);
-      }
-    }
     return this.isAuthenticated;
   }
 

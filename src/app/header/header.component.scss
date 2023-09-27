@@ -6,31 +6,34 @@
   align-items: center; /* Vertically center-align children */
   justify-content: space-between; /* Space between children, pushing them to the edges */
   background-color: #ffcc00; /* Sticker yellow background color */
-  color: #FFF; /* White text color */
+  color: #fff; /* White text color */
   height: 50px; /* Set the height of the navbar to 50 pixels */
   padding: 1em; /* Add padding around the content inside the navbar */
 }
 
+.logo-link {
+  text-decoration: none;
+  color: inherit;
+  /* Styling for the left part of the navbar with the logo and the text */
+  .logo {
+    /* Create a flex container for layout */
+    display: flex;
+    align-items: center; /* Vertically center-align children */
 
-/* Styling for the left part of the navbar with the logo and the text */
-.logo {
-  /* Create a flex container for layout */
-  display: flex;
-  align-items: center; /* Vertically center-align children */
+    /* Logo Image Styling */
+    img {
+      width: 40px; /* Set the width of the logo image to 40 pixels */
+      height: 40px; /* Set the height of the logo image to 40 pixels */
+      border-radius: 50%; /* Apply a circular border radius for a rounded appearance */
+      border: 2px solid #fff; /* Add a white border around the logo */
+      margin-right: 10px; /* Create spacing between the logo and other elements */
+    }
 
-  /* Logo Image Styling */
-  img {
-    width: 40px; /* Set the width of the logo image to 40 pixels */
-    height: 40px; /* Set the height of the logo image to 40 pixels */
-    border-radius: 50%; /* Apply a circular border radius for a rounded appearance */
-    border: 2px solid #fff; /* Add a white border around the logo */
-    margin-right: 10px; /* Create spacing between the logo and other elements */
-  }
-
-  /* Logo Text Styling */
-  h1 {
-    font-size: 24px; /* Set the font size of the text to 24 pixels */
-    color: #fff; /* White text color */
+    /* Logo Text Styling */
+    h1 {
+      font-size: 24px; /* Set the font size of the text to 24 pixels */
+      color: #fff; /* White text color */
+    }
   }
 }
 
@@ -75,12 +78,12 @@
 
 /* Styling for the lines before and after the burger menu icon */
 .menu-button::before {
-  content: ''; /* Empty content, used for creating lines */
+  content: ""; /* Empty content, used for creating lines */
   margin-top: -8px; /* Position the line above the center of the menu button */
 }
 
 .menu-button::after {
-  content: ''; /* Empty content, used for creating lines */
+  content: ""; /* Empty content, used for creating lines */
   margin-top: 8px; /* Position the line below the center of the menu button */
 }
 
@@ -98,7 +101,6 @@
   margin-top: 0; /* Reset margin to position the line at the center */
   transform: rotate(-405deg); /* Rotate the line to create an 'X' shape */
 }
-
 
 /* Styling for the router links within the menu */
 .nav-links .router-link {
@@ -121,7 +123,6 @@
     /* Add additional styles for the active link as needed */
   }
 }
-
 
 /* Media query for screens with a maximum width of 700px */
 @media (max-width: 700px) {

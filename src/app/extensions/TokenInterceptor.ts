@@ -6,7 +6,7 @@ import {
   HttpRequest,
   HttpHandler,
 } from '@angular/common/http';
-import { switchMap, catchError } from 'rxjs/operators';
+import { switchMap, catchError, take } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { AuthenticationService } from '../services/authentication/authentication.service';
 
@@ -31,6 +31,20 @@ export class TokenInterceptor implements HttpInterceptor {
         });
         // Clone the request and add the Authorization header with the token
         return next.handle(cloned);
+      } else {
+        const newTokenData = this.authenticationService.refreshAPI();
+        newTokenData.pipe(
+          take(1),
+          switchMap((newToken) => {
+            // Retry the original request with the new token
+            const newReq = req.clone({
+              setHeaders: {
+                Authorization: `Bearer ${newToken}`,
+              },
+            });
+            return next.handle(newReq);
+          })
+        );
       }
     }
     return next.handle(req.clone());
