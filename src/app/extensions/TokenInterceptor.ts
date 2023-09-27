@@ -15,14 +15,16 @@ export class TokenInterceptor implements HttpInterceptor {
   constructor(private authenticationService: AuthenticationService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<any> {
-    // Get the JWT token from your AuthService or wherever it's stored
+    // Get the JWT token from your AuthService or in the cookies
     const token: string | null = this.authenticationService.getAuthToken();
 
     if (token) {
+      // if there is a token check if its not expired.
       const tokenPayload: string = token.split('.')[1];
       const decodedTokenPayload: any = JSON.parse(atob(tokenPayload));
       const currentTime: number = Math.floor(Date.now() / 1000); // Convert to seconds
 
+      // If the token has nog expired then five the token to the previous call.
       if (decodedTokenPayload.exp && decodedTokenPayload.exp > currentTime) {
         const cloned = req.clone({
           setHeaders: {
@@ -32,11 +34,12 @@ export class TokenInterceptor implements HttpInterceptor {
         // Clone the request and add the Authorization header with the token
         return next.handle(cloned);
       } else {
+        // if it's expired then refresh the token en give it to the api call made earlier.
         const newTokenData = this.authenticationService.refreshAPI();
         newTokenData.pipe(
           take(1),
           switchMap((newToken) => {
-            // Retry the original request with the new token
+            // Retry the original request with the new token gotten from a refresh.
             const newReq = req.clone({
               setHeaders: {
                 Authorization: `Bearer ${newToken}`,
@@ -47,6 +50,7 @@ export class TokenInterceptor implements HttpInterceptor {
         );
       }
     }
+    // return the normal call and let it handle the rest there.
     return next.handle(req.clone());
   }
 }
