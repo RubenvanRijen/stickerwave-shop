@@ -1,24 +1,25 @@
 <nav class="sticker-header">
-    <a class="logo-link" routerlink="/home" routerlinkactive="active">
+    <a class="logo-link" routerLink="/home" routerLinkActive="active">
         <div class="logo">
-            <img src="{{ logoImage }}" alt="Sticker Webshop Logo"/>
-            <h1>{{ applicationName }}
-                Webshop</h1>
+            <img src="{{ logoImage }}" alt="Sticker Webshop Logo" />
+            <h1>{{ applicationName }} Webshop</h1>
         </div>
     </a>
 
-    <input type="checkbox" class="menu-toggle" id="menu-toggle"/>
+
+
+    <input type="checkbox" class="menu-toggle" id="menu-toggle" />
     <label class="burger-menu" for="menu-toggle">
         <div class="menu-button"></div>
     </label>
 
     <nav class="nav-links">
-        <a class="router-link" routerlink="/home" routerlinkactive="active">Home</a>
-        <a class="router-link" routerlink="/products" routerlinkactive="active">Products</a>
-        <a class="router-link" routerlink="/about" routerlinkactive="active">About</a>
-        <a class="router-link" routerlink="/contact" routerlinkactive="active">Contact</a>
-        <a *ngIf="!isLoggedIn()" class="router-link" routerlink="/login" routerlinkactive="active">Login</a>
-        <a *ngIf="isLoggedIn()" class="router-link" routerlink="/login" routerlinkactive="active">Welcome,
-            {{ getUserName() }}</a>
+        <a class="router-link" routerLink="/home" routerLinkActive="active">Home</a>
+        <a class="router-link" routerLink="/products" routerLinkActive="active">Products</a>
+        <a class="router-link" routerLink="/about" routerLinkActive="active">About</a>
+        <a class="router-link" routerLink="/contact" routerLinkActive="active">Contact</a>
+        <a *ngIf="!isLoggedIn()" class="router-link" routerLink="/login" routerLinkActive="active">Login</a>
+        <a *ngIf="isLoggedIn()" class="router-link" routerLink="/login" routerLinkActive="active">Welcome, {{
+            getUserName() }}</a>
     </nav>
 </nav>

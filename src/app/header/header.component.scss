@@ -6,10 +6,11 @@
   align-items: center; /* Vertically center-align children */
   justify-content: space-between; /* Space between children, pushing them to the edges */
   background-color: #ffcc00; /* Sticker yellow background color */
-  color: #fff; /* White text color */
+  color: #FFF; /* White text color */
   height: 50px; /* Set the height of the navbar to 50 pixels */
   padding: 1em; /* Add padding around the content inside the navbar */
 }
+
 
 .logo-link {
   text-decoration: none;
@@ -78,12 +79,12 @@
 
 /* Styling for the lines before and after the burger menu icon */
 .menu-button::before {
-  content: ""; /* Empty content, used for creating lines */
+  content: ''; /* Empty content, used for creating lines */
   margin-top: -8px; /* Position the line above the center of the menu button */
 }
 
 .menu-button::after {
-  content: ""; /* Empty content, used for creating lines */
+  content: ''; /* Empty content, used for creating lines */
   margin-top: 8px; /* Position the line below the center of the menu button */
 }
 
@@ -101,6 +102,7 @@
   margin-top: 0; /* Reset margin to position the line at the center */
   transform: rotate(-405deg); /* Rotate the line to create an 'X' shape */
 }
+
 
 /* Styling for the router links within the menu */
 .nav-links .router-link {
@@ -123,6 +125,7 @@
     /* Add additional styles for the active link as needed */
   }
 }
+
 
 /* Media query for screens with a maximum width of 700px */
 @media (max-width: 700px) {
