@@ -45,6 +45,7 @@ export class TokenInterceptor implements HttpInterceptor {
                 Authorization: `Bearer ${newToken}`,
               },
             });
+            this.authenticationService.setAuthenticated(true);
             return next.handle(newReq);
           })
         );

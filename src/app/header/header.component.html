@@ -20,6 +20,6 @@
         <a class="router-link" routerLink="/contact" routerLinkActive="active">Contact</a>
         <a *ngIf="!isLoggedIn()" class="router-link" routerLink="/login" routerLinkActive="active">Login</a>
         <a *ngIf="isLoggedIn()" class="router-link" routerLink="/login" routerLinkActive="active">Welcome, {{
-            getUserName() }}</a>
+            userName }}</a>
     </nav>
 </nav>

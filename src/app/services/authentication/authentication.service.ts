@@ -53,9 +53,9 @@ export class AuthenticationService {
   }
 
   // api calls
-  public userProfileAPI(): Observable<any> {
+  public userProfileAPI<T>(): Observable<T>{
     const getUserProfileUrl = `${this.apiUrl}/user-profile`;
-    return this.http.get(getUserProfileUrl, this.createHeaderToken());
+    return this.http.get(getUserProfileUrl, this.createHeaderToken()) as Observable<T>;
   }
 
   public loginAPI(formData: loginRequestModel): Observable<any> {

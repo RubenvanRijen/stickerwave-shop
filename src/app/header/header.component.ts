@@ -11,10 +11,15 @@ import { userData } from '../models/UserData';
 export class HeaderComponent {
   public logoImage: string = 'assets/standart-stickers/stickerwave-logo.jpg';
   public applicationName: string = environment.applicationName;
-
+  public userName: string = '';
   public isMenuOpen: boolean = false;
 
   constructor(private authenticationService: AuthenticationService) {}
+
+  ngOnInit() {
+    const user = this.authenticationService.getUserData();
+    user === null ? (this.userName = 'user') : (this.userName = user.name);
+  }
 
   isLoggedIn(): boolean {
     return this.authenticationService.isUserAuthenticated();
@@ -22,14 +27,6 @@ export class HeaderComponent {
 
   getUser(): userData | null {
     return this.authenticationService.getUserData();
-  }
-
-  getUserName(): string | undefined {
-    const user = this.authenticationService.getUserData();
-    if (user === null) {
-      return 'user';
-    }
-    return user?.name;
   }
 
   toggleMenu() {
