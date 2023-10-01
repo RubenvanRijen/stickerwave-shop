@@ -53,9 +53,9 @@ export class AuthenticationService {
   }
 
   // api calls
-  public userProfileAPI<T>(): Observable<T>{
+  public userProfileAPI<T>(): Observable<T> {
     const getUserProfileUrl = `${this.apiUrl}/user-profile`;
-    return this.http.get(getUserProfileUrl, this.createHeaderToken()) as Observable<T>;
+    return this.http.get(getUserProfileUrl, {}) as Observable<T>;
   }
 
   public loginAPI(formData: loginRequestModel): Observable<any> {
@@ -65,12 +65,12 @@ export class AuthenticationService {
 
   public logoutAPI(): Observable<any> {
     const logoutUrl = `${this.apiUrl}/logout`;
-    return this.http.post(logoutUrl, this.createHeaderToken());
+    return this.http.post(logoutUrl, {});
   }
 
   public refreshAPI(): Observable<any> {
     const refreshUrl = `${this.apiUrl}/refresh`;
-    return this.http.post(refreshUrl, this.createHeaderToken());
+    return this.http.post(refreshUrl, {});
   }
 
   public registerAPI(formdata: registerRequestModel): Observable<any> {
@@ -80,13 +80,17 @@ export class AuthenticationService {
 
   // normal auth functions
   public logout() {
-    this.logoutAPI();
-    this.authToken = null;
-    this.userData = null;
-    this.isAuthenticated = false;
+    this.logoutAPI()
+      .pipe(take(1))
+      .subscribe(() => {
+        this.authToken = null;
+        this.userData = null;
+        this.cookieService.delete(this.cookieNames.authenticationToken);
+        this.isAuthenticated = false;
+      });
   }
 
-  public createHeaderToken(): { headers: HttpHeaders } {
+  public createHeaderTokenDepricated(): { headers: HttpHeaders } {
     const token: string =
       this.authToken === null
         ? this.cookieService.get(this.cookieNames.authenticationToken)

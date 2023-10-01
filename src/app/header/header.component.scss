@@ -6,11 +6,10 @@
   align-items: center; /* Vertically center-align children */
   justify-content: space-between; /* Space between children, pushing them to the edges */
   background-color: #ffcc00; /* Sticker yellow background color */
-  color: #FFF; /* White text color */
+  color: #fff; /* White text color */
   height: 50px; /* Set the height of the navbar to 50 pixels */
   padding: 1em; /* Add padding around the content inside the navbar */
 }
-
 
 .logo-link {
   text-decoration: none;
@@ -79,12 +78,12 @@
 
 /* Styling for the lines before and after the burger menu icon */
 .menu-button::before {
-  content: ''; /* Empty content, used for creating lines */
+  content: ""; /* Empty content, used for creating lines */
   margin-top: -8px; /* Position the line above the center of the menu button */
 }
 
 .menu-button::after {
-  content: ''; /* Empty content, used for creating lines */
+  content: ""; /* Empty content, used for creating lines */
   margin-top: 8px; /* Position the line below the center of the menu button */
 }
 
@@ -102,7 +101,6 @@
   margin-top: 0; /* Reset margin to position the line at the center */
   transform: rotate(-405deg); /* Rotate the line to create an 'X' shape */
 }
-
 
 /* Styling for the router links within the menu */
 .nav-links .router-link {
@@ -126,9 +124,55 @@
   }
 }
 
+/* Styling for the dropdown*/
 
-/* Media query for screens with a maximum width of 700px */
-@media (max-width: 700px) {
+.user-dropdown {
+  background-color: #ffcc00;
+
+  .router-link {
+    margin: unset;
+  }
+}
+/* Styling for the user menu button of the dropdown*/
+.user-menu-button {
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+/* Styling for the dropdown content */
+.dropdown-content {
+  background-color: #ffcc00;
+  display: none; // set op none to make it not shown at the beginning
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+  padding-top: 30px;
+}
+
+/* Styling for the dropdown links */
+.dropdown-content a {
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  cursor: pointer;
+}
+
+/* Show the dropdown content when the user hovers over or clicks the user menu button */
+.user-dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Media query for screens with a maximum width of 850px */
+@media (max-width: 850px) {
+  /* Styling for the dropdown content */
+  .dropdown-content {
+    padding-top: 54px;
+    background-color: unset;
+  }
+
   /* Display the burger menu container */
   .burger-menu {
     display: flex;
@@ -160,6 +204,7 @@
     border: 1px solid white; /* Add a border to menu items */
     height: 2.5em; /* Set a specific height for menu items */
     padding: 0.5em; /* Add padding to menu items */
+    line-height: 2.5rem; /* set the text in the middle of the box*/
     transition: height 400ms cubic-bezier(0.23, 1, 0.32, 1); /* Add animation to expand menu items */
   }
 

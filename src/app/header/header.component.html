@@ -19,7 +19,17 @@
         <a class="router-link" routerLink="/about" routerLinkActive="active">About</a>
         <a class="router-link" routerLink="/contact" routerLinkActive="active">Contact</a>
         <a *ngIf="!isLoggedIn()" class="router-link" routerLink="/login" routerLinkActive="active">Login</a>
-        <a *ngIf="isLoggedIn()" class="router-link" routerLink="/login" routerLinkActive="active">Welcome, {{
-            userName }}</a>
+        <!-- Dropdown menu for logged-in users -->
+        <a class="router-link user-dropdown" *ngIf="isLoggedIn()">
+            <button class="user-menu-button" (click)="toggleUserDropdown()">
+                Welcome, {{ this.getUserName()?.name }}
+            </button>
+            <div class="dropdown-content" *ngIf="isUserDropdownOpen">
+                <a class="router-link">View User Info</a>
+                <a class="router-link" (click)="logout()">Logout</a>
+            </div>
+        </a>
+        <!-- <a *ngIf="isLoggedIn()" class="router-link" routerLink="/login" routerLinkActive="active">Welcome, {{
+            userName }}</a> -->
     </nav>
 </nav>

@@ -24,7 +24,7 @@ export class TokenInterceptor implements HttpInterceptor {
       const decodedTokenPayload: any = JSON.parse(atob(tokenPayload));
       const currentTime: number = Math.floor(Date.now() / 1000); // Convert to seconds
 
-      // If the token has nog expired then five the token to the previous call.
+      // If the token has nog expired then give the token to the previous call.
       if (decodedTokenPayload.exp && decodedTokenPayload.exp > currentTime) {
         const cloned = req.clone({
           setHeaders: {
