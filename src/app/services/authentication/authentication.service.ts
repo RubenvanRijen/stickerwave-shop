@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, take } from 'rxjs';
@@ -7,12 +7,15 @@ import { loginRequestModel } from 'src/app/models/LoginRequestModel';
 import { CookieService } from 'ngx-cookie-service';
 import { CookieNames } from '../cookieNames';
 import { registerRequestModel } from 'src/app/models/RegisterRequestModel';
+import { Router } from '@angular/router';
+import { Location, PlatformLocation } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthenticationService {
   private apiUrl: string = environment.apiURL;
+  private webUrl: string = environment.webURL;
   private authToken: string | null = null;
   private userData: userData | null = null;
   private isAuthenticated: boolean = false;
@@ -20,7 +23,10 @@ export class AuthenticationService {
   constructor(
     private http: HttpClient,
     private cookieNames: CookieNames,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private router: Router,
+    private location: Location,
+    private platformLocation: PlatformLocation
   ) {}
 
   // Setter methods for storing data
@@ -78,6 +84,12 @@ export class AuthenticationService {
     return this.http.post(refreshUrl, formdata);
   }
 
+  public sendEmailVerificationLinkAPI(email: string): Observable<any> {
+    const sendEmailVerificationUrl = `${this.apiUrl}/send-verify-email`;
+    const redirect_url: string = encodeURIComponent(this.getHomeUrl());
+    return this.http.post(sendEmailVerificationUrl, { email, redirect_url });
+  }
+
   // normal auth functions
   public logout() {
     this.logoutAPI()
@@ -90,4 +102,13 @@ export class AuthenticationService {
       });
   }
 
+  getHomeUrl(): string {
+    const protocol: string = this.location.normalize(
+      this.platformLocation.protocol
+    );
+    const hostname: string = this.platformLocation.hostname;
+    const port: string = this.platformLocation.port;
+    const baseHref: string = this.location.normalize('/login');
+    return `${protocol}//${hostname}:${port}${baseHref}`;
+  }
 }

@@ -5,7 +5,6 @@ import { NgForm } from '@angular/forms';
 import { AuthenticationService } from '../services/authentication/authentication.service';
 import { take } from 'rxjs';
 import { Router } from '@angular/router';
-import { registerResponseModel } from '../models/RegisterResponseModel';
 
 @Component({
   selector: 'app-register',
@@ -30,11 +29,13 @@ export class RegisterComponent {
       this.authenticationService
         .registerAPI(this.userData)
         .pipe(take(1))
-        .subscribe((response: registerResponseModel) => {
-          this.authenticationService.setAuthToken(response.access_token); // Store the token
-          this.authenticationService.setUserData(response.user); // Store user data
-          this.authenticationService.setAuthenticated(true); // Set authenticated state
-          this.router.navigate(['/home']);
+        .subscribe(() => {
+          this.authenticationService
+            .sendEmailVerificationLinkAPI(this.userData.email)
+            .pipe(take(1))
+            .subscribe(() => {
+              this.router.navigate(['/home']);
+            });
         });
     } else {
       console.error('Form is invalid.');
