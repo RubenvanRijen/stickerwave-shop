@@ -10,7 +10,8 @@ import { LoginComponent } from './login/login.component';
 import { FormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { TokenInterceptor } from './extensions/TokenInterceptor';
-import { AppInitializerService } from './services/appInitialize/app-initializer-service.service';
+import { TokenInitializerService } from './services/tokenInitialize/token-initializer-service';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { AppInitializerService } from './services/appInitialize/app-initializer-
     FooterComponent,
     HomeComponent,
     LoginComponent,
+    RegisterComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [
@@ -27,12 +29,12 @@ import { AppInitializerService } from './services/appInitialize/app-initializer-
       useClass: TokenInterceptor,
       multi: true,
     },
-    AppInitializerService,
+    TokenInitializerService,
     {
       provide: APP_INITIALIZER,
-      useFactory: (appInitializer: AppInitializerService) => () =>
+      useFactory: (appInitializer: TokenInitializerService) => () =>
         appInitializer.initializeApp(),
-      deps: [AppInitializerService],
+      deps: [TokenInitializerService],
       multi: true,
     },
   ],

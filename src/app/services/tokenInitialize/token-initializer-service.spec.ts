@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { AppInitializerServiceService } from './app-initializer-service.service';
+import { TokenInitializerService } from './token-initializer-service';
 
 describe('AppInitializerServiceService', () => {
-  let service: AppInitializerServiceService;
+  let service: TokenInitializerService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(AppInitializerServiceService);
+    service = TestBed.inject(TokenInitializerService);
   });
 
   it('should be created', () => {

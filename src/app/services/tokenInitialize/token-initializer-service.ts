@@ -6,7 +6,7 @@ import { userData } from 'src/app/models/UserData';
 @Injectable({
   providedIn: 'root',
 })
-export class AppInitializerService {
+export class TokenInitializerService {
   constructor(
     private http: HttpClient,
     private authenticationService: AuthenticationService
