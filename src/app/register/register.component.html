@@ -1,1 +1,44 @@
-<p>register works!</p>
+<div class="main-content registration-container">
+    <div class="registration-form">
+        <h2>Registreren</h2>
+        <form (ngSubmit)="onSubmit(registrationForm)" #registrationForm="ngForm">
+            <div class="input-container">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Enter your username" required
+                    [(ngModel)]="userData.name" #name="ngModel" minlength="3" />
+                <div *ngIf="name.invalid && (name.dirty || name.touched)" class="error-message">
+                    Name is required.
+                </div>
+            </div>
+            <div class="input-container">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required
+                    [(ngModel)]="userData.email" #email="ngModel" />
+                <div *ngIf="email.invalid && (email.dirty || email.touched)" class="error-message">
+                    Please enter a valid email address.
+                </div>
+            </div>
+            <div class="input-container">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required
+                    [(ngModel)]="userData.password" #password="ngModel" />
+                <div *ngIf="password.invalid && (password.dirty || password.touched)" class="error-message">
+                    Password is required.
+                </div>
+            </div>
+            <div class="input-container">
+                <label for="password">Password confirmatie</label>
+                <input type="password" id="password_confirmation" name="password_confirmation"
+                    placeholder="Enter your password" required [(ngModel)]="userData.password_confirmation"
+                    #password_confirmation="ngModel" />
+                <div *ngIf="password_confirmation.touched && !passwordsMatch()" class="error-message">
+                    Passwords do not match.
+                </div>
+            </div>
+
+            <button type="submit">Registreren</button>
+        </form>
+        <p class="login-link">Al een account klik dan hier, <a routerLink="/login" routerLinkActive="active">Login</a>
+        </p>
+    </div>
+</div>

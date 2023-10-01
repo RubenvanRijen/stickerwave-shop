@@ -19,6 +19,8 @@
         <a class="router-link" routerLink="/about" routerLinkActive="active">About</a>
         <a class="router-link" routerLink="/contact" routerLinkActive="active">Contact</a>
         <a *ngIf="!isLoggedIn()" class="router-link" routerLink="/login" routerLinkActive="active">Login</a>
+        <a *ngIf="!isLoggedIn()" class="router-link" routerLink="/register" routerLinkActive="active">Registreren</a>
+
         <!-- Dropdown menu for logged-in users -->
         <a class="router-link user-dropdown" *ngIf="isLoggedIn()">
             <button class="user-menu-button" (click)="toggleUserDropdown()">

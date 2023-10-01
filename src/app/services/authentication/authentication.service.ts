@@ -90,14 +90,4 @@ export class AuthenticationService {
       });
   }
 
-  public createHeaderTokenDepricated(): { headers: HttpHeaders } {
-    const token: string =
-      this.authToken === null
-        ? this.cookieService.get(this.cookieNames.authenticationToken)
-        : this.authToken;
-    const headers: HttpHeaders = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-    return { headers };
-  }
 }
