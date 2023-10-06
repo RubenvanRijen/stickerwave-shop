@@ -13,34 +13,47 @@ export class HeaderComponent {
   public logoImage: string = 'assets/standart-stickers/stickerwave-logo.jpg';
   public applicationName: string = environment.applicationName;
   public userName: string = '';
-  public isMenuOpen: boolean = false;
   public isUserDropdownOpen: boolean = false;
 
+  /**
+   * constructor
+   * @param authenticationService 
+   * @param router 
+   */
   constructor(
     private authenticationService: AuthenticationService,
     private router: Router
   ) {}
 
-  ngOnInit() {}
 
+  /**
+   * is the user authenticated.
+   * @returns boolean
+   */
   public isLoggedIn(): boolean {
     return this.authenticationService.isUserAuthenticated();
   }
 
+  /**
+   * this function return the name of the user or just user.
+   * @returns userData or null
+   */
   public getUserName(): userData | null {
     const user = this.authenticationService.getUserData();
     user === null ? (this.userName = 'user') : (this.userName = user.name);
     return user;
   }
 
-  public toggleMenu() {
-    this.isMenuOpen = !this.isMenuOpen;
-  }
-
+  /**
+   * toggle the dropdown menu for in the component.
+   */
   public toggleUserDropdown() {
     this.isUserDropdownOpen = !this.isUserDropdownOpen;
   }
 
+  /**
+   * logout the user via the service and then redirect.
+   */
   public logout() {
     this.authenticationService.logout();
     this.router.navigate(['/home']);

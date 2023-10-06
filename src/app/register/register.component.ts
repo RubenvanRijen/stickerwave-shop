@@ -12,6 +12,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent {
+  /**
+   * constructor.
+   * @param authenticationService 
+   * @param router 
+   */
   constructor(
     private authenticationService: AuthenticationService,
     private router: Router
@@ -24,6 +29,10 @@ export class RegisterComponent {
     password_confirmation: '',
   };
 
+  /**
+   * send the registration form and then send the verification email if the registration was successfull.
+   * @param registrationForm the form from the component.
+   */
   onSubmit(registrationForm: NgForm) {
     if (registrationForm.valid && this.passwordsMatch()) {
       this.authenticationService
@@ -42,6 +51,10 @@ export class RegisterComponent {
     }
   }
 
+  /**
+   * see if the password and verification password are the same.
+   * @returns boolean
+   */
   public passwordsMatch(): boolean {
     return this.userData.password === this.userData.password_confirmation;
   }

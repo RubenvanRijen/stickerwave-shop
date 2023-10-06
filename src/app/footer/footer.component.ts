@@ -13,11 +13,12 @@ export class FooterComponent {
   public arrowSkyrimImage = "assets/standart-stickers/skyrim-arrow.jpg"
   public pikachuImage = "assets/standart-stickers/pikachu.jpg"
   
-  
+  /**
+   * constructor
+   */
   constructor() {
     this.currentYear = new Date().getFullYear();
   }
   
-  ngOnInit(): void {
-  }
+
 }

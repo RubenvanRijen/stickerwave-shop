@@ -16,11 +16,19 @@ export class LoginComponent {
     password: '',
   }; // Object to hold form data
 
+  /**
+   * constructor.
+   * @param authenticationService 
+   * @param router 
+   */
   constructor(
     private authenticationService: AuthenticationService,
     private router: Router
   ) {}
 
+  /**
+   * submit the login form. If success then set all the data for later usage.
+   */
   onSubmit() {
     this.authenticationService
       .loginAPI(this.formData)

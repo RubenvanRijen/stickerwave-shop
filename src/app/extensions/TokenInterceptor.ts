@@ -14,6 +14,13 @@ import { AuthenticationService } from '../services/authentication/authentication
 export class TokenInterceptor implements HttpInterceptor {
   constructor(private authenticationService: AuthenticationService) {}
 
+  /**
+   * intercept every http request and automatically give it an jwt token if possible
+   * if not then try to retrieve a token if there was ever one or return the normal request without any token header.
+   * @param req the request that is being send and intercepted.
+   * @param next the httpHandler.
+   * @returns 
+   */
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<any> {
     // Get the JWT token from your AuthService or in the cookies
     const token: string | null = this.authenticationService.getAuthToken();

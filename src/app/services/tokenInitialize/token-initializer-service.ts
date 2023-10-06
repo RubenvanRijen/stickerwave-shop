@@ -12,6 +12,11 @@ export class TokenInitializerService {
     private authenticationService: AuthenticationService
   ) {}
 
+  /**
+   * when the app is being initialized check wether there is a token.
+   * if there is make a user call api to get user data. Otherwise refresh then token and then get the data.
+   * Or ignore and do nothing, so user needs to login manually.
+   */
   async initializeApp() {
     const token = this.authenticationService.getAuthToken();
     if (token) {
