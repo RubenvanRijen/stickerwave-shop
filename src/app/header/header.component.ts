@@ -3,6 +3,7 @@ import { environment } from '../../environments/environment.development';
 import { AuthenticationService } from '../services/authentication/authentication.service';
 import { userData } from '../models/UserData';
 import { Router } from '@angular/router';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -17,14 +18,13 @@ export class HeaderComponent {
 
   /**
    * constructor
-   * @param authenticationService 
-   * @param router 
+   * @param authenticationService
+   * @param router
    */
   constructor(
     private authenticationService: AuthenticationService,
     private router: Router
   ) {}
-
 
   /**
    * is the user authenticated.
@@ -55,7 +55,12 @@ export class HeaderComponent {
    * logout the user via the service and then redirect.
    */
   public logout() {
-    this.authenticationService.logout();
+    this.authenticationService
+      .logoutAPI()
+      .pipe(take(1))
+      .subscribe(() => {
+        this.authenticationService.logout();
+      });
     this.router.navigate(['/home']);
   }
 }

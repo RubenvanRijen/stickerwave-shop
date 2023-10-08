@@ -71,10 +71,14 @@ export class TokenInterceptor implements HttpInterceptor {
       );
     } else {
       return this.refreshTokenSubject.pipe(
-        filter((token) => token != null),
         take(1),
-        switchMap((jwt) => {
-          return next.handle(this.addToken(request, jwt));
+        switchMap((jwt: any) => {
+          if (jwt) {
+            return next.handle(this.addToken(request, jwt));
+          } else {
+            this.authenticationService.logout();
+            return throwError('Token error');
+          }
         })
       );
     }

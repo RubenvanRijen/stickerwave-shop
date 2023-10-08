@@ -151,14 +151,10 @@ export class AuthenticationService {
    * logout the user and wipe all the data stored.
    */
   public logout() {
-    this.logoutAPI()
-      .pipe(take(1))
-      .subscribe(() => {
-        this.authToken = null;
-        this.userData = null;
-        this.cookieService.delete(this.cookieNames.authenticationToken);
-        this.isAuthenticated = false;
-      });
+    this.authToken = null;
+    this.userData = null;
+    this.cookieService.delete(this.cookieNames.authenticationToken);
+    this.isAuthenticated = false;
   }
 
   /**
