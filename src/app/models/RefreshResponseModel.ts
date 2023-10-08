@@ -5,4 +5,6 @@ export interface RefreshResponseModel {
   expires_in: number;
   token_type: string;
   user: userData;
+  message: string;
+
 }

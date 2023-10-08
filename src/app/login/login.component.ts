@@ -31,7 +31,7 @@ export class LoginComponent {
    */
   onSubmit() {
     this.authenticationService
-      .loginAPI(this.formData)
+      .loginAPI<loginResponseModel>(this.formData)
       .pipe(take(1))
       .subscribe(
         (response: loginResponseModel) => {

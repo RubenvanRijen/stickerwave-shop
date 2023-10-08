@@ -6,18 +6,14 @@ import {
   HttpEvent,
   HttpErrorResponse,
 } from '@angular/common/http';
-import { switchMap, catchError, take } from 'rxjs/operators';
+import { switchMap, catchError, take, filter } from 'rxjs/operators';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { AuthenticationService } from '../services/authentication/authentication.service';
 import { RefreshResponseModel } from '../models/RefreshResponseModel';
-import { Router } from '@angular/router';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-  constructor(
-    private authenticationService: AuthenticationService,
-    private router: Router
-  ) {}
+  constructor(private authenticationService: AuthenticationService) {}
 
   // Flag to prevent multiple simultaneous token refresh attempts
   private isRefreshing = false;
@@ -91,7 +87,8 @@ export class TokenInterceptor implements HttpInterceptor {
           // Token refresh successful
           this.isRefreshing = false;
           this.refreshTokenSubject.next(response.access_token);
-
+          this.authenticationService.setAuthToken(response.access_token);
+          this.authenticationService.setAuthenticated(true);
           // Retry the original request with the new token
           return next.handle(this.addToken(request, response.access_token));
         }),
@@ -104,16 +101,11 @@ export class TokenInterceptor implements HttpInterceptor {
     } else {
       // Wait for the token to be refreshed and then retry the request
       return this.refreshTokenSubject.pipe(
+        filter((token) => token != null),
         take(1),
         switchMap((jwt: any) => {
-          if (jwt) {
-            // Retry the original request with the new token
-            return next.handle(this.addToken(request, jwt));
-          } else {
-            // Handle the case where the token is null (e.g., logout the user)
-            this.authenticationService.logout();
-            return throwError('Token error');
-          }
+          // Retry the original request with the new token
+          return next.handle(this.addToken(request, jwt));
         })
       );
     }

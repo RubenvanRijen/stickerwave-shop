@@ -6,6 +6,9 @@ import { AuthenticationService } from '../services/authentication/authentication
 import { take } from 'rxjs';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { RegisterResponseModel } from '../models/RegisterResponseModel';
+import { SendEmailVerificationResponseModel } from '../models/SendEmailVerificationResponseModel';
+import { SendEmailVerificationRequestModel } from '../models/SendEmailVerificationRequestModel';
 
 @Component({
   selector: 'app-register',
@@ -38,13 +41,21 @@ export class RegisterComponent {
   onSubmit(registrationForm: NgForm) {
     if (registrationForm.valid && this.passwordsMatch()) {
       this.authenticationService
-        .registerAPI(this.userData)
+        .registerAPI<RegisterResponseModel>(this.userData)
         .pipe(take(1))
-        .subscribe(() => {
+        .subscribe((response: RegisterResponseModel) => {
+          const sendEmailObject: SendEmailVerificationRequestModel = {
+            email: response.user.email,
+            redirect_url: encodeURIComponent(
+              this.authenticationService.getHomeUrl()
+            ),
+          };
           this.authenticationService
-            .sendEmailVerificationLinkAPI(this.userData.email)
+            .sendEmailVerificationLinkAPI<SendEmailVerificationResponseModel>(
+              sendEmailObject
+            )
             .pipe(take(1))
-            .subscribe(() => {
+            .subscribe((response: SendEmailVerificationResponseModel) => {
               this.router.navigate(['/home']);
               this.toastrService.success('success message', 'Success');
             });

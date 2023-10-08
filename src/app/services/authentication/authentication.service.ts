@@ -9,6 +9,7 @@ import { CookieNames } from '../cookieNames';
 import { registerRequestModel } from 'src/app/models/RegisterRequestModel';
 import { Router } from '@angular/router';
 import { Location, PlatformLocation } from '@angular/common';
+import { SendEmailVerificationRequestModel } from 'src/app/models/SendEmailVerificationRequestModel';
 
 @Injectable({
   providedIn: 'root',
@@ -101,25 +102,25 @@ export class AuthenticationService {
    * @param formData the data for request.
    * @returns login response in observarble
    */
-  public loginAPI(formData: loginRequestModel): Observable<any> {
+  public loginAPI<T>(formData: loginRequestModel): Observable<T> {
     const loginUrl = `${this.apiUrl}/login`;
-    return this.http.post(loginUrl, formData);
+    return this.http.post(loginUrl, formData) as Observable<T>;
   }
 
   /**
    * logout call to the api
    * @returns logout response in observarble
    */
-  public logoutAPI(): Observable<any> {
+  public logoutAPI<T>(): Observable<T> {
     const logoutUrl = `${this.apiUrl}/logout`;
-    return this.http.post(logoutUrl, {});
+    return this.http.post(logoutUrl, {}) as Observable<T>;
   }
 
   /**
    * refresh token call to the api
    * @returns refresh response in observarble
    */
-  public refreshAPI<T>(headers?: HttpHeaders): Observable<T> {
+  public refreshAPI<T>(): Observable<T> {
     const refreshUrl = `${this.apiUrl}/refresh`;
     return this.http.post(refreshUrl, {}) as Observable<T>;
   }
@@ -129,9 +130,9 @@ export class AuthenticationService {
    * @param formdata the data for the request
    * @returns register response in observarble
    */
-  public registerAPI(formdata: registerRequestModel): Observable<any> {
+  public registerAPI<T>(formdata: registerRequestModel): Observable<T> {
     const refreshUrl = `${this.apiUrl}/register`;
-    return this.http.post(refreshUrl, formdata);
+    return this.http.post(refreshUrl, formdata) as Observable<T>;
   }
 
   /**
@@ -139,10 +140,11 @@ export class AuthenticationService {
    * @param email the email where to send the email to.
    * @returns send email verification response in observarble
    */
-  public sendEmailVerificationLinkAPI(email: string): Observable<any> {
+  public sendEmailVerificationLinkAPI<T>(
+    formdata: SendEmailVerificationRequestModel
+  ): Observable<T> {
     const sendEmailVerificationUrl = `${this.apiUrl}/send-verify-email`;
-    const redirect_url: string = encodeURIComponent(this.getHomeUrl());
-    return this.http.post(sendEmailVerificationUrl, { email, redirect_url });
+    return this.http.post(sendEmailVerificationUrl, formdata) as Observable<T>;
   }
 
   // FUNCTIONS
@@ -162,7 +164,7 @@ export class AuthenticationService {
    * this has been made for the redirect link after the user has verified it's email.
    * @returns the url
    */
-  private getHomeUrl(): string {
+  public getHomeUrl(): string {
     const protocol: string = this.location.normalize(
       this.platformLocation.protocol
     );
