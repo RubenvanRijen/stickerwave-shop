@@ -18,8 +18,8 @@ export class LoginComponent {
 
   /**
    * constructor.
-   * @param authenticationService 
-   * @param router 
+   * @param authenticationService
+   * @param router
    */
   constructor(
     private authenticationService: AuthenticationService,
@@ -40,7 +40,7 @@ export class LoginComponent {
           this.authenticationService.setAuthenticated(true); // Set authenticated state
           this.router.navigate(['/home']);
         },
-        (error) => {
+        (error: any) => {
           console.error('API Error:', error);
         }
       );

@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, take } from 'rxjs';
@@ -63,7 +63,7 @@ export class AuthenticationService {
    * But it first tries the fastests method the local angular storage.
    * @returns
    */
-  public getAuthToken(): string | null {
+  public getAuthToken(): string {
     return this.authToken !== null
       ? this.authToken
       : this.cookieService.get(this.cookieNames.authenticationToken);
@@ -119,9 +119,9 @@ export class AuthenticationService {
    * refresh token call to the api
    * @returns refresh response in observarble
    */
-  public refreshAPI(): Observable<any> {
+  public refreshAPI<T>(headers?: HttpHeaders): Observable<T> {
     const refreshUrl = `${this.apiUrl}/refresh`;
-    return this.http.post(refreshUrl, {});
+    return this.http.post(refreshUrl, {}) as Observable<T>;
   }
 
   /**
@@ -174,5 +174,20 @@ export class AuthenticationService {
     const port: string = this.platformLocation.port;
     const baseHref: string = this.location.normalize('/login');
     return `${protocol}//${hostname}:${port}${baseHref}`;
+  }
+
+  /**
+   * create a token header.
+   * This has come to life cause the token interceptor calls the refresh when a token is still there but invalid.
+   * @returns a header with a token
+   */
+  public createHeaderToken(): {
+    headers: HttpHeaders;
+  } {
+    const token: string | null = this.getAuthToken();
+    const headers: HttpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return { headers };
   }
 }

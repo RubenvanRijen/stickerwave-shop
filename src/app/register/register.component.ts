@@ -5,6 +5,7 @@ import { NgForm } from '@angular/forms';
 import { AuthenticationService } from '../services/authentication/authentication.service';
 import { take } from 'rxjs';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
@@ -14,12 +15,13 @@ import { Router } from '@angular/router';
 export class RegisterComponent {
   /**
    * constructor.
-   * @param authenticationService 
-   * @param router 
+   * @param authenticationService
+   * @param router
    */
   constructor(
     private authenticationService: AuthenticationService,
-    private router: Router
+    private router: Router,
+    private toastrService: ToastrService
   ) {}
 
   public userData: registerRequestModel = {
@@ -44,6 +46,7 @@ export class RegisterComponent {
             .pipe(take(1))
             .subscribe(() => {
               this.router.navigate(['/home']);
+              this.toastrService.success('success message', 'Success');
             });
         });
     } else {

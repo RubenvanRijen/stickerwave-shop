@@ -1,64 +1,82 @@
-// Create an HTTP interceptor (e.g., token-interceptor.ts)
-
 import { Injectable } from '@angular/core';
 import {
   HttpInterceptor,
   HttpRequest,
   HttpHandler,
+  HttpEvent,
+  HttpErrorResponse,
+  HttpHeaders,
 } from '@angular/common/http';
-import { switchMap, catchError, take } from 'rxjs/operators';
-import { Observable, throwError } from 'rxjs';
+import { switchMap, catchError, take, tap, filter } from 'rxjs/operators';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { AuthenticationService } from '../services/authentication/authentication.service';
+import jwtDecode from 'jwt-decode';
+import { CookieService } from 'ngx-cookie-service';
+import { CookieNames } from '../services/cookieNames';
+import { RefreshResponseModel } from '../models/RefreshResponseModel';
 
-@Injectable() // Add the @Injectable decorator here
+@Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-  constructor(private authenticationService: AuthenticationService) {}
+  constructor(
+    private authenticationService: AuthenticationService,
+    private cookieService: CookieService,
+    private cookieNames: CookieNames
+  ) {}
+  private isRefreshing = false;
+  private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
+    null
+  );
 
-  /**
-   * intercept every http request and automatically give it an jwt token if possible
-   * if not then try to retrieve a token if there was ever one or return the normal request without any token header.
-   * @param req the request that is being send and intercepted.
-   * @param next the httpHandler.
-   * @returns 
-   */
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<any> {
-    // Get the JWT token from your AuthService or in the cookies
-    const token: string | null = this.authenticationService.getAuthToken();
-
-    if (token) {
-      // if there is a token check if its not expired.
-      const tokenPayload: string = token.split('.')[1];
-      const decodedTokenPayload: any = JSON.parse(atob(tokenPayload));
-      const currentTime: number = Math.floor(Date.now() / 1000); // Convert to seconds
-
-      // If the token has nog expired then give the token to the previous call.
-      if (decodedTokenPayload.exp && decodedTokenPayload.exp > currentTime) {
-        const cloned = req.clone({
-          setHeaders: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        // Clone the request and add the Authorization header with the token
-        return next.handle(cloned);
-      } else {
-        // if it's expired then refresh the token en give it to the api call made earlier.
-        const newTokenData = this.authenticationService.refreshAPI();
-        newTokenData.pipe(
-          take(1),
-          switchMap((newToken) => {
-            // Retry the original request with the new token gotten from a refresh.
-            const newReq = req.clone({
-              setHeaders: {
-                Authorization: `Bearer ${newToken}`,
-              },
-            });
-            this.authenticationService.setAuthenticated(true);
-            return next.handle(newReq);
-          })
-        );
-      }
+  intercept(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
+    if (this.authenticationService.getAuthToken()) {
+      request = this.addToken(
+        request,
+        this.authenticationService.getAuthToken()
+      );
     }
-    // return the normal call and let it handle the rest there.
-    return next.handle(req.clone());
+
+    return next.handle(request).pipe(
+      catchError((error) => {
+        if (error instanceof HttpErrorResponse && error.status === 401) {
+          return this.handle401Error(request, next);
+        } else {
+          return throwError(error);
+        }
+      })
+    );
+  }
+
+  private addToken(request: HttpRequest<any>, token: string) {
+    return request.clone({
+      setHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
+
+  private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
+    if (!this.isRefreshing) {
+      this.isRefreshing = true;
+      this.refreshTokenSubject.next(null);
+
+      return this.authenticationService.refreshAPI<RefreshResponseModel>().pipe(
+        switchMap((response: RefreshResponseModel) => {
+          this.isRefreshing = false;
+          this.refreshTokenSubject.next(response.access_token);
+          return next.handle(this.addToken(request, response.access_token));
+        })
+      );
+    } else {
+      return this.refreshTokenSubject.pipe(
+        filter((token) => token != null),
+        take(1),
+        switchMap((jwt) => {
+          return next.handle(this.addToken(request, jwt));
+        })
+      );
+    }
   }
 }
