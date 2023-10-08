@@ -14,7 +14,7 @@ import { TokenInitializerService } from './services/tokenInitialize/token-initia
 import { RegisterComponent } from './register/register.component';
 import { ToastrModule } from 'ngx-toastr';
 import { ErrorInterceptor } from './extensions/ErrorInterceptor';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Import BrowserAnimationsModule
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,10 +26,11 @@ import { ErrorInterceptor } from './extensions/ErrorInterceptor';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot({ positionClass: 'toast-top-right' }),
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    ToastrModule.forRoot(),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },

@@ -7,3 +7,6 @@ html, body{
 .main-content{
   min-height: 75vh; /* Ensure the container takes up at least the full viewport height */
 }
+
+//import the toaster css
+@import 'ngx-toastr/toastr';

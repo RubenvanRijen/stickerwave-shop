@@ -3,12 +3,13 @@ import { userData } from '../models/UserData';
 import { registerRequestModel } from '../models/RegisterRequestModel';
 import { NgForm } from '@angular/forms';
 import { AuthenticationService } from '../services/authentication/authentication.service';
-import { take } from 'rxjs';
+import { catchError, take, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { RegisterResponseModel } from '../models/RegisterResponseModel';
 import { SendEmailVerificationResponseModel } from '../models/SendEmailVerificationResponseModel';
 import { SendEmailVerificationRequestModel } from '../models/SendEmailVerificationRequestModel';
+import { ToastService } from '../services/toasts/toast-service.service';
 
 @Component({
   selector: 'app-register',
@@ -24,7 +25,7 @@ export class RegisterComponent {
   constructor(
     private authenticationService: AuthenticationService,
     private router: Router,
-    private toastrService: ToastrService
+    private toastService: ToastService
   ) {}
 
   public userData: registerRequestModel = {
@@ -42,7 +43,16 @@ export class RegisterComponent {
     if (registrationForm.valid && this.passwordsMatch()) {
       this.authenticationService
         .registerAPI<RegisterResponseModel>(this.userData)
-        .pipe(take(1))
+        .pipe(
+          take(1),
+          catchError((error) => {
+            this.toastService.showErrorToast(
+              'Error',
+              error.error.error.email[0]
+            );
+            return throwError(error);
+          })
+        )
         .subscribe((response: RegisterResponseModel) => {
           const sendEmailObject: SendEmailVerificationRequestModel = {
             email: response.user.email,
@@ -57,9 +67,14 @@ export class RegisterComponent {
             .pipe(take(1))
             .subscribe((response: SendEmailVerificationResponseModel) => {
               this.router.navigate(['/home']);
-              this.toastrService.success('success message', 'Success');
+              this.toastService.showSuccessToast('Success', 'done');
             });
-        });
+        }),
+        (error: any) => {
+          if (error.status === 400) {
+            this.toastService.showErrorToast('Error', error);
+          }
+        };
     } else {
       console.error('Form is invalid.');
     }
