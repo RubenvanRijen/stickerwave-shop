@@ -14,6 +14,8 @@
       </div>
       <button type="submit">Login</button>
     </form>
+    <app-loading-spinner *ngIf="isLoading()"></app-loading-spinner>
+
     <p class="register-link">Nog geen account klik dan hier, <a routerLink="/register"
         routerLinkActive="active">Registreren</a>
     </p>

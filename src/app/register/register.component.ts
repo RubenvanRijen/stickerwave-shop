@@ -9,7 +9,8 @@ import { ToastrService } from 'ngx-toastr';
 import { RegisterResponseModel } from '../models/RegisterResponseModel';
 import { SendEmailVerificationResponseModel } from '../models/SendEmailVerificationResponseModel';
 import { SendEmailVerificationRequestModel } from '../models/SendEmailVerificationRequestModel';
-import { ToastService } from '../services/toasts/toast-service.service';
+import { ToastService } from '../services/toasts/toast.service';
+import { LoadingService } from '../services/loading/loading.service';
 
 @Component({
   selector: 'app-register',
@@ -25,6 +26,7 @@ export class RegisterComponent {
   constructor(
     private authenticationService: AuthenticationService,
     private router: Router,
+    private loadingService: LoadingService,
     private toastService: ToastService
   ) {}
 
@@ -86,5 +88,13 @@ export class RegisterComponent {
    */
   public passwordsMatch(): boolean {
     return this.userData.password === this.userData.password_confirmation;
+  }
+
+  /**
+   * check if the http is still pending.
+   * @returns boolean
+   */
+  isLoading(): boolean {
+    return this.loadingService.isLoading();
   }
 }

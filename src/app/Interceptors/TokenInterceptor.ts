@@ -44,7 +44,11 @@ export class TokenInterceptor implements HttpInterceptor {
     // Continue with the request and handle errors
     return next.handle(request).pipe(
       catchError((error) => {
-        if (error instanceof HttpErrorResponse && error.status === 401) {
+        if (
+          error instanceof HttpErrorResponse &&
+          error.status === 401 &&
+          error.message === 'Token expired'
+        ) {
           // Handle 401 (Unauthorized) error by attempting token refresh
           return this.handle401Error(request, next);
         } else {
@@ -93,7 +97,7 @@ export class TokenInterceptor implements HttpInterceptor {
           return next.handle(this.addToken(request, response.access_token));
         }),
         catchError((error: any) => {
-          // Handle the case where the refresh token fails.
+          // Handle in the case where the refresh token fails.
           this.authenticationService.logout();
           return throwError(error);
         })

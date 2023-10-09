@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { TokenInitializerService } from './token-initializer-service';
+import { TokenInitializerService } from './page-initializer.service';
 
 describe('AppInitializerServiceService', () => {
   let service: TokenInitializerService;

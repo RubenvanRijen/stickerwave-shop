@@ -10,11 +10,13 @@ import { LoginComponent } from './login/login.component';
 import { FormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { TokenInterceptor } from './Interceptors/TokenInterceptor';
-import { TokenInitializerService } from './services/tokenInitialize/token-initializer-service';
+import { TokenInitializerService } from './services/tokenInitialize/page-initializer.service';
 import { RegisterComponent } from './register/register.component';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ProfileComponent } from './profile/profile.component'; // Import BrowserAnimationsModule
+import { LoadingInterceptor } from './Interceptors/LoadingInterceptor';
+import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 // import { ErrorInterceptor } from './Interceptors/ErrorInterceptor';
 @NgModule({
   declarations: [
@@ -25,6 +27,7 @@ import { ProfileComponent } from './profile/profile.component'; // Import Browse
     LoginComponent,
     RegisterComponent,
     ProfileComponent,
+    LoadingSpinnerComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,6 +39,7 @@ import { ProfileComponent } from './profile/profile.component'; // Import Browse
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
     // { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     TokenInitializerService,
     {

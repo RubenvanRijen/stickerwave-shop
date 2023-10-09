@@ -2,8 +2,10 @@ import { Component } from '@angular/core';
 import { AuthenticationService } from '../services/authentication/authentication.service';
 import { loginRequestModel } from '../models/LoginRequestModel';
 import { Router } from '@angular/router';
-import { take } from 'rxjs';
+import { catchError, take, throwError } from 'rxjs';
 import { loginResponseModel } from '../models/LoginResponseModel';
+import { LoadingService } from '../services/loading/loading.service';
+import { ToastService } from '../services/toasts/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +25,9 @@ export class LoginComponent {
    */
   constructor(
     private authenticationService: AuthenticationService,
-    private router: Router
+    private router: Router,
+    private loadingService: LoadingService,
+    private toastService: ToastService
   ) {}
 
   /**
@@ -42,7 +46,18 @@ export class LoginComponent {
         },
         (error: any) => {
           console.error('API Error:', error);
+          this.toastService.showErrorToast(
+            'Error',
+            'Verkeerde gegevens ingevuld'
+          );
         }
       );
+  }
+  /**
+   * check if the http is still pending.
+   * @returns boolean
+   */
+  isLoading(): boolean {
+    return this.loadingService.isLoading();
   }
 }
