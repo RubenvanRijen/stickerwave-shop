@@ -9,12 +9,13 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { FormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { TokenInterceptor } from './extensions/TokenInterceptor';
+import { TokenInterceptor } from './Interceptors/TokenInterceptor';
 import { TokenInitializerService } from './services/tokenInitialize/token-initializer-service';
 import { RegisterComponent } from './register/register.component';
 import { ToastrModule } from 'ngx-toastr';
-import { ErrorInterceptor } from './extensions/ErrorInterceptor';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Import BrowserAnimationsModule
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ProfileComponent } from './profile/profile.component'; // Import BrowserAnimationsModule
+// import { ErrorInterceptor } from './Interceptors/ErrorInterceptor';
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,6 +24,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
     HomeComponent,
     LoginComponent,
     RegisterComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,

@@ -27,7 +27,7 @@
                 Welcome, {{ this.getUserName()?.name }}
             </button>
             <div class="dropdown-content" *ngIf="isUserDropdownOpen">
-                <a class="router-link">View User Info</a>
+                <a routerLink="/profile" routerLinkActive="active" class="router-link">View User Info</a>
                 <a class="router-link" (click)="logout()">Logout</a>
             </div>
         </a>
