@@ -26,10 +26,10 @@ export class RegisterComponent {
   constructor(
     private authenticationService: AuthenticationService,
     private router: Router,
-    private loadingService: LoadingService,
     private toastService: ToastService
   ) {}
 
+  public isLoading: boolean = false;
   public userData: registerRequestModel = {
     name: '',
     email: '',
@@ -43,6 +43,7 @@ export class RegisterComponent {
    */
   onSubmit(registrationForm: NgForm) {
     if (registrationForm.valid && this.passwordsMatch()) {
+      this.isLoading = true;
       this.authenticationService
         .registerAPI<RegisterResponseModel>(this.userData)
         .pipe(
@@ -52,6 +53,7 @@ export class RegisterComponent {
               'Error',
               error.error.error.email[0]
             );
+            this.isLoading = false;
             return throwError(error);
           })
         )
@@ -68,6 +70,7 @@ export class RegisterComponent {
             )
             .pipe(take(1))
             .subscribe((response: SendEmailVerificationResponseModel) => {
+              this.isLoading = false;
               this.router.navigate(['/home']);
               this.toastService.showSuccessToast('Success', 'done');
             });
@@ -76,6 +79,7 @@ export class RegisterComponent {
           if (error.status === 400) {
             this.toastService.showErrorToast('Error', error);
           }
+          this.isLoading = false;
         };
     } else {
       console.error('Form is invalid.');
@@ -88,13 +92,5 @@ export class RegisterComponent {
    */
   public passwordsMatch(): boolean {
     return this.userData.password === this.userData.password_confirmation;
-  }
-
-  /**
-   * check if the http is still pending.
-   * @returns boolean
-   */
-  isLoading(): boolean {
-    return this.loadingService.isLoading();
   }
 }
